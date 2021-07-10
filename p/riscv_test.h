@@ -4,6 +4,7 @@
 #define _ENV_PHYSICAL_SINGLE_CORE_H
 
 #include "../encoding.h"
+#include "../xcustom.h"
 
 //-----------------------------------------------------------------------
 // Begin Macro
@@ -21,6 +22,11 @@
 #define RVTEST_RV64UV                                                   \
   .macro init;                                                          \
   RVTEST_VECTOR_ENABLE;                                                 \
+  .endm
+
+#define RVTEST_RV64UX                                                   \
+  .macro init;                                                          \
+  RVTEST_XS_ENABLE                                                      \
   .endm
 
 #define RVTEST_RV32U                                                    \
@@ -144,6 +150,10 @@
   csrs mstatus, a0;                                                     \
   csrwi fcsr, 0;                                                        \
   csrwi vcsr, 0;
+
+#define RVTEST_XS_ENABLE                                                \
+  li a0, MSTATUS_XS &(MSTATUS_XS >> 1);                                 \
+  csrs mstatus, a0;
 
 #define RISCV_MULTICORE_DISABLE                                         \
   csrr a0, mhartid;                                                     \
